@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Marketplace Makanan Lokal</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Marketplace Makanan Lokal Indonesia</h1>
+        <nav>
+            <a href="/">Beranda</a>
+            <a href="/cart">Keranjang ({{ cart|length }})</a>
+        </nav>
+    </header>
+    <main>
+        <h2>Produk Unggulan</h2>
+        <div class="products">
+            {% for product in products %}
+            <div class="product">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+                <h3>{{ product.name }}</h3>
+                <p>Rp {{ product.price }}</p>
+                <a href="/product/{{ product.id }}">Lihat Detail</a>
+                <form action="/add_to_cart/{{ product.id }}" method="post">
+                    <button type="submit">Tambah ke Keranjang</button>
+                </form>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+</body>
+</html>

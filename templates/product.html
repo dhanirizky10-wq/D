@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ product.name }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Marketplace Makanan Lokal</h1>
+        <nav>
+            <a href="/">Beranda</a>
+            <a href="/cart">Keranjang</a>
+        </nav>
+    </header>
+    <main>
+        <div class="product-detail">
+            <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+            <h2>{{ product.name }}</h2>
+            <p>{{ product.description }}</p>
+            <p>Harga: Rp {{ product.price }}</p>
+            <form action="/add_to_cart/{{ product.id }}" method="post">
+                <button type="submit">Tambah ke Keranjang</button>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
