@@ -1,0 +1,54 @@
+name: Python Package using Conda
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 5
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+    - name: Add conda to system path
+      run: |
+        # $CONDA is an environment variable pointing to the root of the miniconda directory
+        echo $CONDA/bin >> $GITHUB_PATH
+    - name: Install dependencies
+      run: |
+        conda env update --file environment.yml --name base
+    - name: Lint with flake8
+      run: |
+        conda install flake8
+        # stop the build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+    - name: Test with pytest
+      run: |
+        conda install pytest
+        pytest
+            - nama: Cache
+  penggunaan: actions/cache@v5.0.5
+  dengan:
+    # Daftar file, direktori, dan pola wildcard untuk di-cache dan dipulihkan
+    jalur:
+    # Kunci eksplisit untuk memulihkan dan menyimpan cache
+    kunci:
+    # String multi-baris berurutan yang mencantumkan kunci yang cocok dengan awalan, yang digunakan untuk memulihkan cache usang jika tidak ada cache hit yang terjadi untuk kunci tersebut. Perhatikan bahwa `cache-hit` mengembalikan false dalam kasus ini.
+    restore-keys: # opsional
+    # Ukuran chunk yang digunakan untuk membagi file besar selama pengunggahan, dalam byte
+    upload-chunk-size: # opsional
+    # Nilai boolean opsional, jika diaktifkan, memungkinkan pengelola jendela untuk menyimpan atau memulihkan cache yang dapat dipulihkan atau disimpan masing-masing di platform lain.
+    enableCrossOsArchive: # opsional, defaultnya false
+    # Gagalkan alur kerja jika entri cache tidak ditemukan
+    fail-on-cache-miss: # opsional, defaultnya false
+    # Periksa apakah entri cache ada untuk input yang diberikan (kunci, kunci pemulihan) tanpa mengunduh cache
+    hanya pencarian: # opsional, defaultnya false
+    # Jalankan langkah post untuk menyimpan cache meskipun langkah sebelumnya gagal
+    save-always: # opsional, defaultnya false
+          
